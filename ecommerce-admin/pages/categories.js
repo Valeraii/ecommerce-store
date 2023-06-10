@@ -12,7 +12,7 @@ function Categories({swal}) {
 
     useEffect(() => {
         fetchCategories();
-    }, []);
+    }, [])
 
     function fetchCategories() {
         axios.get('/api/categories').then(result => {
