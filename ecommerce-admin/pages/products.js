@@ -9,7 +9,7 @@ export default function Products() {
         axios.get('/api/products').then(response => {
             setProducts(response.data);
         });
-    })
+    }, []);
     return (
         <Layout>
             <Link className="btn-primary" href="/products/new"> Add new product</Link>
