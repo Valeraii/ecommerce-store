@@ -34,6 +34,10 @@ export const ButtonStyle = css`
             height: 20px;
         }
     `}
+    ${props => props.block && css `
+        display: block;
+        width: 100%;
+    `}
 `;
 const StyledButton = styled.button`
    ${ButtonStyle}
