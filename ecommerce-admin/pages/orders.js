@@ -18,6 +18,7 @@ export default function OrdersPage() {
                         <th>Date</th>
                         <th>Recipient</th>
                         <th>Products</th>
+                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,8 +26,7 @@ export default function OrdersPage() {
                         <tr>
                             <td>{(new Date(order.createdAt)).toLocaleString()}</td>
                             <td>{order.name} {order.email} <br/ > 
-                                {order.city} {order.postalCode} <br />
-                                {order.address} {order.country}
+                                {order.phone} 
                             </td>
                             <td>
                                 {order.line_items.map(line => (
@@ -34,6 +34,10 @@ export default function OrdersPage() {
                                     {line.price_data?.product_data.name} x {line.quantity} <br/>
                                     </>
                                 ))}
+                            </td>
+                            <td>
+                                {order.pickupLocation} <br/>
+                                {order.paymentMethod}
                             </td>
                         </tr>
                     ))}

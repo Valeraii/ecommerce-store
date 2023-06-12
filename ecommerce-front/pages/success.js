@@ -16,7 +16,7 @@ export default function SuccessPage() {
             <Center>
                 <Box>
                     <h1>Thanks for your order!</h1>
-                    <p>We will email you when your order will be sent</p>
+                    <p>We will email you when your order is ready for pickup.</p>
                 </Box>
             </Center>
         </>

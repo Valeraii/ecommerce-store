@@ -5,15 +5,17 @@ import { useEffect, useState } from 'react';
 
 export default function Products() {
     const [products, setProducts] = useState([]);
+
     useEffect(() => {
         axios.get('/api/products').then(response => {
             setProducts(response.data);
         });
     }, []);
+    
     return (
         <Layout>
             <Link className="btn-primary" href="/products/new"> Add new product</Link>
-            <table className="basic mt-2">
+            <table id="myTable" className="basic mt-2">
                 <thead>
                     <tr>
                         <td>Product Name</td>

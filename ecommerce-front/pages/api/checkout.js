@@ -9,7 +9,7 @@ export default async function handle(req, res) {
     }
 
     await mongooseConnect();
-    const {name, email, city, postalCode, address, country, cartProducts} = req.body;
+    const {name, email, phone, pickupLocation, paymentMethod, cartProducts} = req.body;
     const productIds = cartProducts;
     const uniqueIds = [...new Set(productIds)];
     const productsInfo = Product.find({_id: uniqueIds});      
@@ -51,7 +51,7 @@ export default async function handle(req, res) {
         }
     } 
     const orderDoc = await Order.create({
-        line_items, name, email, city, postalCode, address, country, paid:false
+        line_items, name, email, phone, pickupLocation, paymentMethod, paid:false
     });
 
     res.json({line_items})

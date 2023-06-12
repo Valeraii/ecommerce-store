@@ -9,6 +9,15 @@ import Table from "@/components/Table";
 import Input from "@/components/Input";
 import {useRouter} from "next/router";
 
+const StyledSelect = styled.select`
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+`;
+
 const ColumnsWrapper = styled.div`
     display: grid;
     grid-template-columns: 1.2fr 0.8fr;
@@ -45,20 +54,15 @@ const QuantityLabel = styled.span`
     padding: 0 3px;
 `;
 
-const CityHolder = styled.div`
-  display:flex;
-  gap: 5px;
-`;
 
 export default function CartPage() {
     const {cartProducts, addProduct, removeProduct, clearCart} = useContext(CartContext);
     const [products, setProducts] = useState([]);
-    const [name,setName] = useState('');
-    const [email,setEmail] = useState('');
-    const [city,setCity] = useState('');
-    const [postalCode,setPostalCode] = useState('');
-    const [address,setAddress] = useState('');
-    const [country,setCountry] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [pickupLocation, setPickupLocation] = useState('');
+    const [paymentMethod, setPaymentMethod] = useState('');
     const router = useRouter();
 
     useEffect(() => {
@@ -80,8 +84,12 @@ export default function CartPage() {
     }
 
     async function goToPayment() {
+        if(name === '' || email === '' || phone === '' || pickupLocation === '' || paymentMethod === '') {
+            document.getElementById('error').innerHTML = 'Please fill all fields';
+            return;
+        }
         const res = await axios.post('/api/checkout', {
-            name, email, city, postalCode, address, country, cartProducts
+            name, email, phone, pickupLocation, paymentMethod, cartProducts
         });
         if(res.data) {
             clearCart();
@@ -94,7 +102,7 @@ export default function CartPage() {
         const price = products.find(product => product._id === productId)?.price || 0;
         total += price;
     }
-
+      
     return (
         <>
             <Header />
@@ -145,22 +153,25 @@ export default function CartPage() {
                     {!!cartProducts?.length && (   
                         <Box>
                             <h2>Order Information</h2>
-                                <Input type="text" name="name" placeholder="Name" value={name} onChange={ev => setName(ev.target.value)}/>
+                                <Input type="text" name="name" placeholder="Name" value={name} onChange={ev => setName(ev.target.value)} required />
                                 <Input type="text" name="email" placeholder="Email" value={email} onChange={ev => setEmail(ev.target.value)}/> 
-                                <CityHolder>
-                                    <Input type="text"
-                                        placeholder="City"
-                                        value={city}
-                                        name="city"
-                                        onChange={ev => setCity(ev.target.value)}/>
-                                    <Input type="text"
-                                        placeholder="Postal Code"
-                                        value={postalCode}
-                                        name="postalCode"
-                                        onChange={ev => setPostalCode(ev.target.value)}/>
-                                </CityHolder>
-                                <Input type="text" name="address"placeholder="Address" value={address} onChange={ev => setAddress(ev.target.value)}/>
-                                <Input type="text" name="country"placeholder="Country" value={country} onChange={ev => setCountry(ev.target.value)}/>
+                                <Input type="text" name="phone" placeholder="Phone" value={phone} onChange={ev => setPhone(ev.target.value)}/>
+                                <StyledSelect value={pickupLocation} onChange={ev => setPickupLocation(ev.target.value)}>
+                                    <option value="0">Pickup Location: </option>
+                                    <option value="Richmond">Richmond：Ironwood Canadian Tire 停車場📍11388 Steveston Hwy</option>
+                                    <option value="Burnaby">Burnaby: Wholesale Club 停車場 (舊Safeway旁邊）📍5335  Kingsway</option>
+                                    <option value="Vancouver">Vancouver: Oakridge Mall對面TD Bank 停車場📍511 WEST 41 AVE</option>
+                                    <option value="North Surrey"> North Surrey: T&T 停車場📍15277 100 AVE</option>
+                                    <option value="South Surrey"> South Surrey: South Point Canadian Tire 停車場📍3059 152 Street</option>
+                                    <option value="Langley"> Langley: H-Mart 停車場📍19555 Fraser Hwy</option>
+                                    <option value="Coquitlam"> Coquitlam: Coquilam Centre Walmart 停車場📍2929 Barnet Hwy</option>
+                                </StyledSelect>
+                                <StyledSelect value={paymentMethod} onChange={ev => setPaymentMethod(ev.target.value)}>
+                                    <option value="0">Payment Method: </option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Etransfer">Etransfer</option>
+                                </StyledSelect>
+                                <div id="error" style={{color: 'red'}}></div>
                                 <Button primary block onClick={goToPayment}>Continue to payment</Button>
                         </Box>
                     )}
