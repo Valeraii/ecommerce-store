@@ -18,7 +18,6 @@ export default async function handle(req, res) {
             resolve({fields, files});
         });
     });
-    console.log('length', files.file.length);
 
     const client = new S3Client({
         region: 'us-west-2',

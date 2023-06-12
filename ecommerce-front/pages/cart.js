@@ -7,6 +7,7 @@ import {CartContext} from "@/components/CartContext"
 import axios from "axios";
 import Table from "@/components/Table";
 import Input from "@/components/Input";
+import {useRouter} from "next/router";
 
 const ColumnsWrapper = styled.div`
     display: grid;
@@ -44,13 +45,21 @@ const QuantityLabel = styled.span`
     padding: 0 3px;
 `;
 
+const CityHolder = styled.div`
+  display:flex;
+  gap: 5px;
+`;
+
 export default function CartPage() {
-    const {cartProducts, addProduct, removeProduct} = useContext(CartContext);
+    const {cartProducts, addProduct, removeProduct, clearCart} = useContext(CartContext);
     const [products, setProducts] = useState([]);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [address, setAddress] = useState('');
-    const [postalCode, setPostalCode] = useState('');
+    const [name,setName] = useState('');
+    const [email,setEmail] = useState('');
+    const [city,setCity] = useState('');
+    const [postalCode,setPostalCode] = useState('');
+    const [address,setAddress] = useState('');
+    const [country,setCountry] = useState('');
+    const router = useRouter();
 
     useEffect(() => {
         if(cartProducts.length > 0) {
@@ -68,6 +77,16 @@ export default function CartPage() {
 
     function decrementItem(id) {
         removeProduct(id);
+    }
+
+    async function goToPayment() {
+        const res = await axios.post('/api/checkout', {
+            name, email, city, postalCode, address, country, cartProducts
+        });
+        if(res.data) {
+            clearCart();
+            router.push('/success');
+        }
     }
 
     let total = 0;
@@ -126,14 +145,23 @@ export default function CartPage() {
                     {!!cartProducts?.length && (   
                         <Box>
                             <h2>Order Information</h2>
-                            <form method="post" action="/api/checkout">
-                                <Input type="text" placeholder="Name" value={name} onChange={ev => setName(ev.target.value)}/>
-                                <Input type="text" placeholder="Email" value={email} onChange={ev => setEmail(ev.target.value)}/> 
-                                <Input type="text" placeholder="Address" value={address} onChange={ev => setAddress(ev.target.value)}/>
-                                <Input type="text" placeholder="Postal Code" value={postalCode} onChange={ev => setPostalCode(ev.target.value)}/>
-                                <Button primary block type="submit">Continue to payment</Button>
-                            </form>
-                          
+                                <Input type="text" name="name" placeholder="Name" value={name} onChange={ev => setName(ev.target.value)}/>
+                                <Input type="text" name="email" placeholder="Email" value={email} onChange={ev => setEmail(ev.target.value)}/> 
+                                <CityHolder>
+                                    <Input type="text"
+                                        placeholder="City"
+                                        value={city}
+                                        name="city"
+                                        onChange={ev => setCity(ev.target.value)}/>
+                                    <Input type="text"
+                                        placeholder="Postal Code"
+                                        value={postalCode}
+                                        name="postalCode"
+                                        onChange={ev => setPostalCode(ev.target.value)}/>
+                                </CityHolder>
+                                <Input type="text" name="address"placeholder="Address" value={address} onChange={ev => setAddress(ev.target.value)}/>
+                                <Input type="text" name="country"placeholder="Country" value={country} onChange={ev => setCountry(ev.target.value)}/>
+                                <Button primary block onClick={goToPayment}>Continue to payment</Button>
                         </Box>
                     )}
                  
