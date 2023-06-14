@@ -54,6 +54,6 @@ export default async function handle(req, res) {
         line_items, name, email, phone, pickupLocation, paymentMethod, paid:false
     });
 
-    res.json({line_items})
+    res.json(orderDoc)
 }
 

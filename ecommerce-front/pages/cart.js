@@ -8,6 +8,7 @@ import axios from "axios";
 import Table from "@/components/Table";
 import Input from "@/components/Input";
 import {useRouter} from "next/router";
+import { sendEmail } from "@/components/Email";
 
 const StyledSelect = styled.select`
     width: 100%;
@@ -83,6 +84,24 @@ export default function CartPage() {
         removeProduct(id);
     }
 
+    function getAddress() {
+        if(pickupLocation === 'Richmond') {
+            return 'Richmond：Ironwood Canadian Tire 停車場📍11388 Steveston Hwy';
+        } else if (pickupLocation === 'Burnaby') {
+            return 'Burnaby: Wholesale Club 停車場 (舊Safeway旁邊）📍5335  Kingsway';
+        } else if (pickupLocation === 'Vancouver') {
+            'Vancouver: Oakridge Mall對面TD Bank 停車場📍511 WEST 41 AVE';
+        } else if (pickupLocation === 'North Surrey') {
+            return 'North Surrey: T&T 停車場📍15277 100 AVE';
+        } else if (pickupLocation === 'South Surrey') {
+            return 'South Surrey: South Point Canadian Tire 停車場📍3059 152 Street';
+        } else if (pickupLocation === 'Langley') {
+            return 'Langley: H-Mart 停車場📍19555 Fraser Hwy';
+        } else if (pickupLocation === 'Coquitlam') {
+            return 'Coquitlam: Coquilam Centre Walmart 停車場📍2929 Barnet Hwy';
+        }
+    }
+    
     async function goToPayment() {
         if(name === '' || email === '' || phone === '' || pickupLocation === '' || paymentMethod === '') {
             document.getElementById('error').innerHTML = 'Please fill all fields';
@@ -91,8 +110,20 @@ export default function CartPage() {
         const res = await axios.post('/api/checkout', {
             name, email, phone, pickupLocation, paymentMethod, cartProducts
         });
+
+        var templateParams = {
+            to_name: name,
+            to_email: email,
+            amount: total,
+            pickupLocation: getAddress(),
+            paymentMethod: paymentMethod,
+            order: res.data.line_items.map(
+                item => item.price_data.product_data.name + ' x ' + item.quantity).join('\n')
+        }
+        console.log(res.data.line_items);
         if(res.data) {
             clearCart();
+            sendEmail(templateParams);
             router.push('/success');
         }
     }
