@@ -6,7 +6,6 @@ import { CartContext } from "./CartContext";
 
 const StyledHeader = styled.header`
     background-color: #222;
-    padding: 
 `;
 
 const Logo = styled(Link)`
@@ -40,7 +39,6 @@ export default function Header() {
                     <StyledNav>
                         <NavLink href={'/'}>Home</NavLink>
                         <NavLink href={'/products'}>All products</NavLink>
-                        <NavLink href={'/account'}>Account</NavLink>
                         <NavLink href={'/cart'}>Cart ({cartProducts.length})</NavLink>
                     </StyledNav>
                 </Wrapper>
