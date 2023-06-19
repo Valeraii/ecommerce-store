@@ -120,7 +120,6 @@ export default function CartPage() {
             order: res.data.line_items.map(
                 item => item.price_data.product_data.name + ' x ' + item.quantity).join('\n')
         }
-        console.log(res.data.line_items);
         if(res.data) {
             clearCart();
             sendEmail(templateParams);

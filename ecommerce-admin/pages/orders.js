@@ -4,11 +4,27 @@ import axios from "axios";
 
 export default function OrdersPage() {
     const [orders, setOrders] = useState([]);
+
     useEffect(() => {
+       fetchOrders();
+    }, []);
+
+    function fetchOrders() {
         axios.get('/api/orders').then(res => {
             setOrders(res.data);
         });
-    }, []);
+    }
+
+    const setPaidStatus = async (e, id, oldValue) => {
+        const newValue = e.target.textContent;
+        if(newValue !== oldValue) {
+            const paidStatus = newValue === 'Yes' ? true : false;
+            const data = {id, paidStatus};
+            await axios.put('/api/orders', data);
+            fetchOrders();   
+        }
+    };
+
     return (
         <Layout>
             <h1>Orders</h1>
@@ -19,6 +35,7 @@ export default function OrdersPage() {
                         <th>Recipient</th>
                         <th>Products</th>
                         <th>Details</th>
+                        <th>Paid</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,6 +55,9 @@ export default function OrdersPage() {
                             <td>
                                 {order.pickupLocation} <br/>
                                 {order.paymentMethod}
+                            </td>
+                            <td contenteditable='true' onBlur={(e) => setPaidStatus(e, order._id, order.paid ? 'Yes' : 'No')}>
+                                {order.paid ? 'Yes' : 'No'}
                             </td>
                         </tr>
                     ))}

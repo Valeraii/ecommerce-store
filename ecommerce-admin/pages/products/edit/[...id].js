@@ -8,6 +8,7 @@ export default function EditProductPage() {
     const [productInfo, setProductInfo] = useState(null);
     const router = useRouter();
     const {id} = router.query;
+
     useEffect(() => {
         if(!id) {
             return;
@@ -16,6 +17,7 @@ export default function EditProductPage() {
             setProductInfo(response.data);
         });
     }, [id]);
+    
     return (
         <Layout>
             <h1>Edit Product</h1>
