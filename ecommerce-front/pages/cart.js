@@ -2,7 +2,7 @@ import Button from "@/components/Button";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
 import styled from "styled-components";
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useEffect, useState, Image} from 'react';
 import {CartContext} from "@/components/CartContext"
 import axios from "axios";
 import Table from "@/components/Table";
@@ -155,7 +155,7 @@ export default function CartPage() {
                                     <tr key={product._id}>
                                         <ProductInfoCell>
                                             <ProductImageBox>    
-                                                <img src={product.images[0]} alt=""/>
+                                                <Image src={product.images[0]} alt=""/>
                                             </ProductImageBox> 
                                             {product.title} 
                                         </ProductInfoCell>
