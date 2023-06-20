@@ -2,13 +2,14 @@ import Button from "@/components/Button";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
 import styled from "styled-components";
-import {useContext, useEffect, useState, Image} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {CartContext} from "@/components/CartContext"
 import axios from "axios";
 import Table from "@/components/Table";
 import Input from "@/components/Input";
 import {useRouter} from "next/router";
 import { sendEmail } from "@/components/Email";
+import Image from "next/image";
 
 const StyledSelect = styled.select`
     width: 100%;
