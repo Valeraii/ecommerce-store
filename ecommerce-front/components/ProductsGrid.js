@@ -3,10 +3,11 @@ import styled from 'styled-components';
 
 const StyledProductsGrid = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 30px;
-    padding-top: 30px;
-    padding-bottom: 30px;
+    @media screen and (min-width: 768px) {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
 `;
 
 export default function ProductsGrid({products}){
