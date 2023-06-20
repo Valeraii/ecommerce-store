@@ -1,8 +1,13 @@
 {
   "/_app": "pages/_app.js",
+  "/api/cart": "pages/api/cart.js",
+  "/api/checkout": "pages/api/checkout.js",
+  "/cart": "pages/cart.html",
+  "/success": "pages/success.html",
   "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js",
-  "/success": "pages/success.js",
+  "/product/[id]": "pages/product/[id].js",
   "/products": "pages/products.js",
-  "/": "pages/index.js"
+  "/": "pages/index.js",
+  "/_document": "pages/_document.js",
+  "/404": "pages/404.html"
 }

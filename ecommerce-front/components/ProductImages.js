@@ -39,7 +39,7 @@ export default function ProductImages({images}) {
        
             <ImageButtons>
                 {images.map(image => (
-                    <ImageButton onClick={() => setActiveImage(image)}>
+                    <ImageButton key={image._id} onClick={() => setActiveImage(image)}>
                         <Image src={image} alt=""/>
                     </ImageButton>
                 ))}
