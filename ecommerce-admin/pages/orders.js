@@ -56,7 +56,7 @@ export default function OrdersPage() {
                                 {order.pickupLocation} <br/>
                                 {order.paymentMethod}
                             </td>
-                            <td contenteditable='true' onBlur={(e) => setPaidStatus(e, order._id, order.paid ? 'Yes' : 'No')}>
+                            <td contentEditable='true' onBlur={(e) => setPaidStatus(e, order._id, order.paid ? 'Yes' : 'No')}>
                                 {order.paid ? 'Yes' : 'No'}
                             </td>
                         </tr>
